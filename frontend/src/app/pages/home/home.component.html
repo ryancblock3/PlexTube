@@ -1,0 +1,26 @@
+<div class="container mx-auto px-4 py-8 text-gray-300">
+  <h1 class="text-3xl font-bold mb-6 text-white">Recent Downloads</h1>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-8">
+    <div *ngFor="let video of recentVideos" class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+      <img [src]="video.thumbnailUrl" [alt]="video.title" class="w-full h-40 object-cover">
+      <div class="p-4">
+        <h3 class="font-semibold text-white truncate">{{ video.title }}</h3>
+        <p class="text-sm text-gray-400 mt-1">{{ video.channelName }}</p>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="text-2xl font-bold mb-4 text-white">Quick Actions</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <a routerLink="/channels" class="bg-blue-600 text-white rounded px-4 py-3 text-center hover:bg-blue-700 transition">
+      Add New Channel
+    </a>
+    <a routerLink="/videos" class="bg-green-600 text-white rounded px-4 py-3 text-center hover:bg-green-700 transition">
+      Download Video
+    </a>
+    <a routerLink="/playlists" class="bg-purple-600 text-white rounded px-4 py-3 text-center hover:bg-purple-700 transition">
+      Manage Playlists
+    </a>
+  </div>
+</div>

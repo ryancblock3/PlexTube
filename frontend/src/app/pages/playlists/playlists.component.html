@@ -1,0 +1,28 @@
+<div class="container mx-auto px-4 py-8 text-gray-300">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-white">Playlists</h1>
+    <button (click)="openAddPlaylistModal()" class="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition">
+      Add Playlist
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div *ngFor="let playlist of playlists" class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+      <img [src]="playlist.thumbnailUrl" [alt]="playlist.name" class="w-full h-40 object-cover">
+      <div class="p-4">
+        <h3 class="font-semibold text-white text-lg mb-2">{{ playlist.name }}</h3>
+        <p class="text-gray-400 text-sm mb-4">{{ playlist.description }}</p>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-gray-500">{{ playlist.videoCount }} videos</span>
+          <button (click)="viewPlaylist(playlist)" class="text-blue-400 hover:text-blue-300">
+            View
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="playlists.length === 0" class="text-center text-gray-400 mt-8">
+    No playlists found.
+  </div>
+</div>

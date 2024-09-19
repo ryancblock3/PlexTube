@@ -1,0 +1,30 @@
+<header class="bg-gray-800 shadow-lg">
+  <nav class="container mx-auto px-4 py-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="/" class="text-white font-bold text-xl">Plextube</a>
+      </div>
+      <div class="hidden md:flex space-x-4">
+        <a routerLink="/" routerLinkActive="text-blue-400" [routerLinkActiveOptions]="{exact: true}" class="text-gray-300 hover:text-white">Home</a>
+        <a routerLink="/channels" routerLinkActive="text-blue-400" class="text-gray-300 hover:text-white">Channels</a>
+        <a routerLink="/videos" routerLinkActive="text-blue-400" class="text-gray-300 hover:text-white">Videos</a>
+        <a routerLink="/playlists" routerLinkActive="text-blue-400" class="text-gray-300 hover:text-white">Playlists</a>
+        <a routerLink="/settings" routerLinkActive="text-blue-400" class="text-gray-300 hover:text-white">Settings</a>
+      </div>
+      <div class="md:hidden">
+        <button (click)="toggleMobileMenu()" class="text-gray-300 hover:text-white focus:outline-none">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="isMobileMenuOpen" class="md:hidden mt-2">
+      <a routerLink="/" routerLinkActive="text-blue-400" [routerLinkActiveOptions]="{exact: true}" class="block text-gray-300 hover:text-white py-2">Home</a>
+      <a routerLink="/channels" routerLinkActive="text-blue-400" class="block text-gray-300 hover:text-white py-2">Channels</a>
+      <a routerLink="/videos" routerLinkActive="text-blue-400" class="block text-gray-300 hover:text-white py-2">Videos</a>
+      <a routerLink="/playlists" routerLinkActive="text-blue-400" class="block text-gray-300 hover:text-white py-2">Playlists</a>
+      <a routerLink="/settings" routerLinkActive="text-blue-400" class="block text-gray-300 hover:text-white py-2">Settings</a>
+    </div>
+  </nav>
+</header>

@@ -1,10 +1,10 @@
-# Plextube Project Summary
+# Plextube Project Summary - Updated
 
 ## Project Overview
 Plextube is a YouTube video downloader application that allows users to manage and download videos from YouTube channels and playlists. It's designed to be hosted on a personal Unraid server and integrated with Plex for media consumption.
 
 ## Technology Stack
-1. Frontend: Angular with Tailwind CSS
+1. Frontend: Angular 17 with Tailwind CSS
 2. Backend: Spring Boot 3.3.4 (Java 17)
 3. Database: PostgreSQL
 4. ORM: Spring Data JPA
@@ -12,13 +12,51 @@ Plextube is a YouTube video downloader application that allows users to manage a
 6. YouTube Integration: YouTube Data API v3, youtube-dl or yt-dlp (to be implemented)
 
 ## Current Progress
-1. Backend Setup: Spring Boot application initialized
-2. Database Integration: PostgreSQL with Liquibase for schema management
-3. Entity Classes and Repositories: Created for all database tables
-4. Service Layer: Implemented with CRUD operations and business logic
-5. REST Controllers: Basic CRUD operations exposed through API
-6. YouTube API: Basic integration for fetching channel and video information
-7. Environment Configuration: .gitignore, .env file, and updated application.properties
+
+### Backend
+1. Spring Boot application initialized and configured
+2. PostgreSQL database integrated with Liquibase for schema management
+3. Entity classes created for all database tables:
+   - User
+   - Channel
+   - Video
+   - Playlist
+   - DownloadJob
+4. Repository interfaces created for all entities
+5. Service layer implemented with CRUD operations and business logic for all entities
+6. REST Controllers implemented with basic CRUD operations for all entities:
+   - ChannelController
+   - VideoController
+   - PlaylistController
+   - DownloadJobController
+7. Basic YouTube API integration for fetching channel and video information
+8. Environment configuration set up (.gitignore, .env file, application.properties)
+9. CORS configuration added to allow requests from the Angular frontend
+
+### Frontend
+1. Angular project initialized with Angular 17 and Tailwind CSS
+2. Standalone components approach adopted
+3. Basic routing implemented in app.routes.ts
+4. Services created for API interactions:
+   - ChannelService
+   - VideoService
+   - PlaylistService
+   - DownloadJobService
+5. Components created and partially implemented:
+   - HeaderComponent
+   - FooterComponent
+   - HomeComponent
+   - ChannelsComponent
+   - VideosComponent
+   - PlaylistsComponent
+   - SettingsComponent (basic structure)
+6. Dark mode implemented by default
+
+## Core Functionality (Implemented)
+1. Channel management (add, view, update, delete)
+2. Video management (view, update, delete)
+3. Playlist management (add, view, update, delete)
+4. Basic error handling and console logging
 
 ## Core Functionality (To Be Implemented)
 1. Channel-based downloading with video limits
@@ -28,30 +66,48 @@ Plextube is a YouTube video downloader application that allows users to manage a
 5. Video quality options and subtitle downloading
 6. Metadata scraping (descriptions, tags, upload dates)
 7. Flexible storage locations for development and production
+8. YouTube video download functionality
+9. Scheduled tasks for video management
+10. Advanced error handling and user-facing error messages
+11. Security and authentication
+12. Plex integration
+13. Unit and integration tests
+14. Docker configuration for deployment
+15. API documentation (Swagger or SpringFox)
+16. Pagination and filtering for list endpoints
 
 ## Frontend Features (To Be Implemented)
-1. Dark mode by default with light mode toggle
-2. Channel and video management interfaces
-3. Recently downloaded videos display
-4. Download progress tracking
-5. Video metadata display (names, channel names, thumbnails)
-6. Mobile responsiveness
-7. Dedicated error tab for displaying issues
+1. Light mode toggle
+2. Recently downloaded videos display on home page
+3. Download progress tracking
+4. Improved video metadata display (names, channel names, thumbnails)
+5. Mobile responsiveness improvements
+6. Dedicated error tab for displaying issues
+7. Search functionality for finding specific videos or channels
+8. Storage management display (usage, alerts for capacity limits)
+9. Add Video functionality
+10. Video playback integration
 
 ## Backend Features (To Be Implemented)
 1. Scheduled tasks for checking new videos and managing rotations
 2. File system management for organizing downloaded videos
 3. Simple authentication system using Spring Security
+4. Integration with youtube-dl or yt-dlp for video downloading
+5. Advanced YouTube API integration for comprehensive metadata retrieval
+6. Implement business logic for video rotation and management
 
 ## Management Features (To Be Implemented)
-1. Search functionality for finding specific videos or channels
-2. Storage management (usage display, alerts for capacity limits)
+1. User management and authentication
+2. Application settings management
+3. Logging and monitoring
+4. Backup and restore functionality
 
 ## Integration and Deployment (To Be Implemented)
 1. Docker support for easy deployment on Unraid server
 2. Plex integration (auto-update Plex library, sync watch status)
+3. Continuous Integration/Continuous Deployment (CI/CD) pipeline
 
-## Database Schema
+## Database Schema (Current)
 
 ```sql
 CREATE TABLE users (
@@ -112,17 +168,68 @@ CREATE TABLE download_jobs (
 );
 ```
 
-## Next Steps
-1. Implement YouTube video download functionality
-2. Create scheduled tasks for video management
-3. Implement error handling and logging
-4. Set up security and authentication
-5. Develop the Angular frontend
-6. Integrate with Plex
-7. Write unit and integration tests
-8. Configure Docker for deployment
-9. Implement API documentation (Swagger or SpringFox)
-10. Add pagination and filtering to list endpoints
+## Detailed Next Steps
 
-## Notes for AI Assistants
-When assisting with this project, consider the existing structure and technologies. Provide code examples and explanations that align with the current setup and best practices for Spring Boot and Angular development. Focus on enhancing and expanding the existing components, particularly in areas not yet implemented.
+1. Frontend Development:
+   - Implement "Add Video" functionality in VideosComponent
+   - Create modals for adding/editing channels, videos, and playlists
+   - Implement video playback functionality
+   - Develop the SettingsComponent fully
+   - Create a dedicated ErrorComponent for displaying application-wide errors
+   - Implement search functionality across channels and videos
+   - Add pagination to list views (channels, videos, playlists)
+   - Implement loading indicators for API calls
+   - Create a dashboard view for the home page with recent downloads and stats
+   - Develop a user authentication flow (login, register, password reset)
+
+2. Backend Development:
+   - Implement YouTube video download functionality using youtube-dl or yt-dlp
+   - Create scheduled tasks for checking new videos and managing rotations
+   - Implement file system management for organizing downloaded videos
+   - Set up Spring Security for authentication and authorization
+   - Develop advanced YouTube API integration for comprehensive metadata retrieval
+   - Implement business logic for video rotation and management
+   - Create endpoints for application settings management
+   - Implement logging and monitoring features
+   - Develop backup and restore functionality
+
+3. Integration:
+   - Implement Plex integration for library updates and watch status sync
+   - Develop a plugin or script for Plex to recognize and categorize Plextube downloads
+
+4. Testing:
+   - Write unit tests for frontend services and components
+   - Implement integration tests for backend services and controllers
+   - Develop end-to-end tests for critical user flows
+
+5. Documentation:
+   - Implement API documentation using Swagger or SpringFox
+   - Create user documentation for setting up and using Plextube
+   - Develop technical documentation for future maintenance and contributions
+
+6. Deployment:
+   - Configure Docker for containerization of both frontend and backend
+   - Set up a CI/CD pipeline for automated testing and deployment
+   - Create scripts for easy deployment on Unraid servers
+
+7. Performance Optimization:
+   - Implement caching strategies for frequently accessed data
+   - Optimize database queries and indexes
+   - Implement lazy loading for frontend components and routes
+
+8. Security Enhancements:
+   - Implement rate limiting for API endpoints
+   - Set up SSL/TLS for secure communications
+   - Develop a robust error handling and logging system to catch and report security issues
+
+9. User Experience Improvements:
+   - Implement drag-and-drop functionality for reordering playlists or videos
+   - Develop a notification system for long-running processes (e.g., downloads)
+   - Create keyboard shortcuts for common actions
+
+10. Scalability Considerations:
+    - Implement database sharding strategies for handling large amounts of data
+    - Develop a microservices architecture for better scalability of individual components
+    - Implement a message queue system for handling asynchronous tasks
+
+This updated project summary provides a comprehensive overview of the Plextube project, including its current state, implemented features, and detailed plans for future development. It serves as a thorough guide for AI assistants to understand the full scope of the project and provide accurate assistance in its ongoing development.
