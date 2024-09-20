@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Channel } from '../interfaces/channel.interface';
 
 @Injectable({
@@ -14,9 +14,18 @@ export class ChannelService {
   getChannels(page: number, pageSize: number): Observable<{ channels: Channel[], totalPages: number }> {
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('pageSize', pageSize.toString());
+      .set('size', pageSize.toString());
 
-    return this.http.get<{ channels: Channel[], totalPages: number }>(`${this.apiUrl}`, { params });
+    return this.http.get<any>(`${this.apiUrl}`, { params }).pipe(
+      map(response => ({
+        channels: response.channels,
+        totalPages: response.totalPages
+      })),
+      catchError(error => {
+        console.error('Error fetching channels:', error);
+        return throwError(() => new Error('Failed to load channels. Please try again.'));
+      })
+    );
   }
 
   getChannelById(id: number): Observable<Channel> {

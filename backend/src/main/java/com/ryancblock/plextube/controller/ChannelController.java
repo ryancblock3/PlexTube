@@ -3,11 +3,15 @@ package com.ryancblock.plextube.controller;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ryancblock.plextube.entity.Channel;
 import com.ryancblock.plextube.service.ChannelService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -26,8 +30,18 @@ public class ChannelController {
     }
 
     @GetMapping
-    public List<Channel> getAllChannels() {
-        return channelService.getAllChannels();
+    public ResponseEntity<Map<String, Object>> getAllChannels(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<Channel> channelPage = channelService.getChannels(PageRequest.of(page, size));
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("channels", channelPage.getContent());
+        response.put("currentPage", channelPage.getNumber());
+        response.put("totalItems", channelPage.getTotalElements());
+        response.put("totalPages", channelPage.getTotalPages());
+        
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

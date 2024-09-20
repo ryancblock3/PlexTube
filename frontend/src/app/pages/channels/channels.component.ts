@@ -16,7 +16,7 @@ export class ChannelsComponent implements OnInit {
   isAddChannelModalVisible = false;
   isLoading = false;
   error: string | null = null;
-  currentPage = 1;
+  currentPage = 0; // Changed to 0-based indexing
   pageSize = 9;
   totalPages = 1;
 
@@ -30,7 +30,7 @@ export class ChannelsComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
     this.channelService.getChannels(this.currentPage, this.pageSize).subscribe({
-      next: (response: { channels: Channel[], totalPages: number }) => {
+      next: (response) => {
         this.channels = response.channels;
         this.totalPages = response.totalPages;
         this.isLoading = false;
@@ -104,14 +104,14 @@ export class ChannelsComponent implements OnInit {
   }
 
   previousPage() {
-    if (this.currentPage > 1) {
+    if (this.currentPage > 0) {
       this.currentPage--;
       this.loadChannels();
     }
   }
 
   nextPage() {
-    if (this.currentPage < this.totalPages) {
+    if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
       this.loadChannels();
     }
