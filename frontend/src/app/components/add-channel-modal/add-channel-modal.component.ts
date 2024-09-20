@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-add-channel-modal',
@@ -10,23 +10,30 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./add-channel-modal.component.css']
 })
 export class AddChannelModalComponent {
-  @Input() isVisible = false;
+  @Input() isVisible: boolean = false;
+  @Output() addChannel = new EventEmitter<{ url: string, maxVideos: number }>();
   @Output() closeModal = new EventEmitter<void>();
-  @Output() addChannel = new EventEmitter<{url: string, maxVideos: number}>();
 
-  channelUrl = '';
-  maxVideos = 10;
+  url: string = '';
+  maxVideos: number = 10;
 
-  close() {
-    this.closeModal.emit();
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      this.addChannel.emit({
+        url: this.url,
+        maxVideos: this.maxVideos
+      });
+      this.resetForm();
+    }
   }
 
-  onSubmit() {
-    if (this.channelUrl && this.maxVideos > 0) {
-      this.addChannel.emit({ url: this.channelUrl, maxVideos: this.maxVideos });
-      this.channelUrl = '';
-      this.maxVideos = 10;
-      this.close();
-    }
+  onClose() {
+    this.closeModal.emit();
+    this.resetForm();
+  }
+
+  private resetForm() {
+    this.url = '';
+    this.maxVideos = 10;
   }
 }

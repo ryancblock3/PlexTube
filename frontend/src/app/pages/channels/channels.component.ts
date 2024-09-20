@@ -14,6 +14,11 @@ import { Channel } from '../../interfaces/channel.interface';
 export class ChannelsComponent implements OnInit {
   channels: Channel[] = [];
   isAddChannelModalVisible = false;
+  isLoading = false;
+  error: string | null = null;
+  currentPage = 1;
+  pageSize = 9;
+  totalPages = 1;
 
   constructor(private channelService: ChannelService) { }
 
@@ -22,13 +27,18 @@ export class ChannelsComponent implements OnInit {
   }
 
   loadChannels(): void {
-    this.channelService.getChannels().subscribe({
-      next: (channels) => {
-        this.channels = channels;
+    this.isLoading = true;
+    this.error = null;
+    this.channelService.getChannels(this.currentPage, this.pageSize).subscribe({
+      next: (response: { channels: Channel[], totalPages: number }) => {
+        this.channels = response.channels;
+        this.totalPages = response.totalPages;
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching channels:', error);
-        // Handle error (e.g., show error message to user)
+        this.error = 'Failed to load channels. Please try again.';
+        this.isLoading = false;
       }
     });
   }
@@ -41,23 +51,31 @@ export class ChannelsComponent implements OnInit {
     this.isAddChannelModalVisible = false;
   }
 
-  addNewChannel(channelData: {url: string, maxVideos: number}) {
-    // Extract YouTube channel ID from URL (you might want to improve this regex)
-    const youtubeChannelId = channelData.url.match(/channel\/([^\/]+)/)?.[1];
-
-    if (!youtubeChannelId) {
-      console.error('Invalid YouTube channel URL');
-      return;
-    }
-
-    this.channelService.addChannelFromYouTube(youtubeChannelId, channelData.maxVideos).subscribe({
-      next: (newChannel) => {
-        this.channels.unshift(newChannel);
+  addNewChannel(channelData: { url: string, maxVideos: number }) {
+    this.isLoading = true;
+    this.error = null;
+    this.channelService.addChannelFromYouTube(channelData.url, channelData.maxVideos).subscribe({
+      next: (newChannel: Channel) => {
+        if (this.channels) {
+          this.channels.unshift(newChannel);
+        } else {
+          this.channels = [newChannel];
+        }
         this.closeAddChannelModal();
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error adding channel:', error);
-        // Handle error (e.g., show error message to user)
+        if (error.status === 400) {
+          this.error = error.error.message || 'Invalid input. Please check your YouTube channel URL and try again.';
+        } else if (error.status === 409) {
+          this.error = 'This channel has already been added to the database.';
+        } else if (error.status === 500) {
+          this.error = 'Server error occurred. Please try again later.';
+        } else {
+          this.error = 'An unexpected error occurred. Please try again.';
+        }
+        this.isLoading = false;
       }
     });
   }
@@ -68,14 +86,34 @@ export class ChannelsComponent implements OnInit {
   }
 
   deleteChannel(channel: Channel) {
-    this.channelService.deleteChannel(channel.id).subscribe({
-      next: () => {
-        this.channels = this.channels.filter(c => c.id !== channel.id);
-      },
-      error: (error) => {
-        console.error('Error deleting channel:', error);
-        // Handle error (e.g., show error message to user)
-      }
-    });
+    if (confirm(`Are you sure you want to delete ${channel.name}?`)) {
+      this.isLoading = true;
+      this.error = null;
+      this.channelService.deleteChannel(channel.id).subscribe({
+        next: () => {
+          this.channels = this.channels.filter(c => c.id !== channel.id);
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error deleting channel:', error);
+          this.error = 'Failed to delete channel. Please try again.';
+          this.isLoading = false;
+        }
+      });
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadChannels();
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadChannels();
+    }
   }
 }
