@@ -1,13 +1,13 @@
 # Plextube
 
-Plextube is a YouTube video downloader application that allows users to manage and download videos from YouTube channels and playlists. It's designed to be hosted on a personal Unraid server and integrated with Plex for media consumption.
+Plextube is a video downloader application that allows users to manage and download videos from channels and playlists. It's designed to be hosted on a personal Unraid server and integrated with Plex.
 
 ## Features
 
 - Channel-based downloading with video limits
 - Automatic video rotation (delete oldest, download newest)
 - Specific video downloading via URL
-- Playlist support for downloading entire YouTube playlists
+- Playlist support for downloading entire playlists
 - Video quality options and subtitle downloading
 - Metadata scraping (descriptions, tags, upload dates)
 - Dark mode UI with light mode toggle
@@ -20,7 +20,6 @@ Plextube is a YouTube video downloader application that allows users to manage a
 - Database: PostgreSQL
 - ORM: Spring Data JPA
 - Database Migration: Liquibase
-- YouTube Integration: YouTube Data API v3, youtube-dl or yt-dlp
 
 ## Prerequisites
 
@@ -73,7 +72,7 @@ Plextube is a YouTube video downloader application that allows users to manage a
 
 ## Usage
 
-1. Add YouTube channels or playlists through the web interface.
+1. Add channels or playlists through the web interface.
 2. Configure download settings for each channel or playlist.
 3. Plextube will automatically download new videos based on your settings.
 4. Access downloaded videos through your Plex media server.
@@ -114,16 +113,6 @@ Instructions for deploying on Unraid will be provided in a separate document.
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Acknowledgments
-
-- YouTube Data API
-- youtube-dl/yt-dlp project
-- Plex Media Server
 
 ## Contact
 
